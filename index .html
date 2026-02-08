@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Saumya Love Card 💕</title>
+  <title>Shristi Valentine Card 🖤</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { 
@@ -12,7 +12,7 @@
     }
     .card { 
       background: white; border-radius: 20px; padding: 40px 30px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.1); 
-      max-width: 300px; animation: heartbeat 2s infinite; 
+      max-width: 320px; animation: heartbeat 2s infinite; 
     }
     @keyframes heartbeat { 0%,100%{transform:scale(1);} 50%{transform:scale(1.05);} }
     h1 { font-size: 28px; color: #ff6b9d; margin-bottom: 10px; }
@@ -22,89 +22,141 @@
     button { 
       background: linear-gradient(45deg, #ff6b9d, #ff9a9e); color: white; border: none; padding: 15px 40px; 
       border-radius: 50px; font-size: 18px; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 20px rgba(255,107,157,0.3); 
+      margin: 10px; 
     }
     button:hover { transform: scale(1.05); box-shadow: 0 15px 30px rgba(255,107,157,0.4); }
     button.shake { animation: shake 0.5s; }
     @keyframes shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-5px);} 75%{transform:translateX(5px);} }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    input { padding: 12px; border: 2px solid #ff9a9e; border-radius: 25px; font-size: 16px; text-align: center; width: 85%; margin: 10px 0; }
     .question { display: none; text-align: center; margin-top: 20px; }
     .question.active { display: block; animation: fadeIn 0.5s; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    .q-text { font-size: 24px; color: #ff6b9d; margin-bottom: 20px; }
+    .q-text { font-size: 24px; color: #ff6b9d; margin-bottom: 10px; }
     .hint { font-size: 14px; color: #ff69b4; font-style: italic; margin-bottom: 10px; }
     .yes-no { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
     .yes-no button { padding: 12px 30px; font-size: 16px; }
+    .answers { display: none; max-height: 350px; overflow-y: auto; text-align: left; padding: 20px; background: #fff0f5; border-radius: 15px; margin-top: 20px; }
+    .answers.active { display: block; }
+    .answer-item { margin: 15px 0; padding: 12px; background: white; border-radius: 10px; border-left: 5px solid #ff6b9d; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
     .final { display: none; }
-    .final.active { display: block; font-size: 20px; color: #ff1493; animation: fadeIn 0.5s; }
-    .panda { font-size: 50px; margin: 20px 0; animation: bounce 2s infinite; }
+    .final.active { display: block; font-size: 22px; color: #ff1493; animation: fadeIn 0.5s; }
+    .panda { font-size: 40px; margin: 10px; }
   </style>
 </head>
 <body>
   <div class="card">
     <div class="heart">💖</div>
     <h1>Hey love</h1>
-    <p class="subtitle">Open this special card for Saumya 💕</p>
-    <button onclick="startQuestions()">Click Now 🙂</button>
+    <p class="subtitle">Open this special card for Shristi 🐼</p>
+    <button onclick="startValentine()">Click Now</button>
     
-    <div id="questions" class="question">
-      <div id="hint" class="hint"></div>
-      <div class="q-text" id="q-text"></div>
+    <!-- Valentine Confirmation -->
+    <div id="valentine-confirm" class="question">
+      <div id="val-hint" class="hint"></div>
+      <div class="q-text">Will you be my Valentine, Shristi?</div>
       <div class="yes-no">
-        <button id="yes-btn" onclick="answerQuestion('yes')">Yes 💕</button>
-        <button id="no-btn" onclick="answerQuestion('no')">No 😏</button>
+        <button id="val-yes" onclick="confirmValentine('yes')">Yes 🖤</button>
+        <button id="val-no" onclick="confirmValentine('no')">No 😏</button>
       </div>
     </div>
     
+    <!-- Questions -->
+    <div id="questions" class="question">
+      <div id="q-hint" class="hint"></div>
+      <div class="q-text" id="q-text"></div>
+      <input type="text" id="q-answer" placeholder="Type your answer for Shristi..." oninput="checkAnswer()" />
+      <button id="next-btn" onclick="nextQuestion()" disabled>Next 💕</button>
+    </div>
+    
+    <!-- Answers Summary -->
+    <div id="answers" class="answers">
+      <h3>All Your Answers for Shristi 🐼🖤</h3>
+      <div id="answers-list" class="panda">🐼</div>
+    </div>
+    
+    <!-- Final -->
     <div id="final" class="final">
-      <p>Yay Saumya! You're my everything 💖</p>
-      <div class="panda">🐼💝 Pookie Panda Forever! 🐼</div>
-      <p>I'll hold your hand forever, Saumya 💞</p>
+      <p>Perfect Shristi! 🖤</p>
+      <div style="font-size: 70px; margin: 20px 0;">🖤</div>
+      <p>Forever yours, Shristi 🖤🐼</p>
     </div>
   </div>
 
   <script>
     const questions = [
-      "Do you love me, Saumya?",
       "Favorite memory with me?",
       "Dream date idea?",
       "Secret wish for us?",
       "Song that reminds you of our love?",
-      "Cutest nickname for Saumya?",
+      "Cutest nickname for Shristi?",
       "Adventure we'd go on?",
       "One word for our vibe?",
-      "Ready to be my pookie forever? 💝"
+      "Promise for every year ahead? 🖤"
     ];
     let currentQ = 0;
-    let answeredYes = false;
+    let answers = [];
+    let valentineConfirmed = false;
 
-    function startQuestions() {
+    function startValentine() {
       document.querySelector('.card > button').style.display = 'none';
-      document.getElementById('questions').classList.add('active');
-      showQuestion();
+      document.getElementById('valentine-confirm').classList.add('active');
     }
 
-    function showQuestion() {
-      document.getElementById('q-text').textContent = questions[currentQ];
-      document.getElementById('hint').textContent = '';
-      answeredYes = false;
-    }
-
-    function answerQuestion(answer) {
-      const noBtn = document.getElementById('no-btn');
+    function confirmValentine(answer) {
+      const noBtn = document.getElementById('val-no');
       if (answer === 'no') {
         noBtn.classList.add('shake');
         setTimeout(() => noBtn.classList.remove('shake'), 500);
-        document.getElementById('hint').textContent = 'Aww Saumya, try again? 😘 Say Yes for next!';
+        document.getElementById('val-hint').textContent = "Aww Shristi 🐼, please be my Valentine? 🖤";
         return;
       } else {
-        answeredYes = true;
-        currentQ++;
-        if (currentQ >= questions.length) {
-          document.getElementById('questions').classList.remove('active');
-          document.getElementById('final').classList.add('active');
-          return;
-        }
+        valentineConfirmed = true;
+        document.getElementById('valentine-confirm').classList.remove('active');
+        document.getElementById('questions').classList.add('active');
         showQuestion();
       }
+    }
+
+    function showQuestion() {
+      if (currentQ < questions.length) {
+        document.getElementById('q-text').textContent = questions[currentQ];
+        document.getElementById('q-answer').focus();
+        document.getElementById('q-hint').textContent = '';
+        document.getElementById('next-btn').disabled = true;
+      }
+    }
+
+    function checkAnswer() {
+      const answer = document.getElementById('q-answer').value.trim();
+      document.getElementById('next-btn').disabled = !answer;
+    }
+
+    function nextQuestion() {
+      const answer = document.getElementById('q-answer').value.trim();
+      answers.push({ q: questions[currentQ], a: answer });
+      currentQ++;
+      if (currentQ >= questions.length) {
+        showAnswers();
+        return;
+      }
+      showQuestion();
+    }
+
+    function showAnswers() {
+      document.getElementById('questions').classList.remove('active');
+      document.getElementById('answers').classList.add('active');
+      const list = document.getElementById('answers-list');
+      list.innerHTML = answers.map((item, i) => 
+        `<div class="answer-item">
+          <strong>Q${i+1}:</strong> ${item.q}<br>
+          <strong>Your answer:</strong> ${item.a} 🖤
+        </div>`
+      ).join('') + '<div style="text-align:center; font-size:32px; margin-top:20px;">🐼 Shristi 🖤</div>';
+      setTimeout(() => {
+        document.getElementById('answers').classList.remove('active');
+        document.getElementById('final').classList.add('active');
+      }, 5000); // Longer to read all answers
     }
   </script>
 </body>
